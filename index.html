@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🔮 Tarot Card of the Day</title>
+  <style>
+    body {
+      background-color: #1a0533;
+      color: #f0d9ff;
+      font-family: Georgia, serif;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 { font-size: 2.5em; margin-bottom: 10px; }
+    button {
+      background-color: #7b2fbe;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover { background-color: #9b4fde; }
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+    .card {
+      background: #2d0b4e;
+      border: 2px solid #7b2fbe;
+      border-radius: 15px;
+      padding: 20px;
+      width: 200px;
+    }
+    .card h2 { font-size: 2em; }
+    .card h3 { color: #d4a8ff; }
+    .card p { font-size: 0.9em; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <h1>🔮 Tarot Card of the Day</h1>
+  <p>Draw three cards and discover your message for today</p>
+  <button onclick="drawCards()">✨ Draw My Cards</button>
+  <div class="cards" id="cardDisplay"></div>
+
+  <script>
+    const tarotCards = [
+      { name: "The Fool", emoji: "🌟", message: "A new journey begins. Take the leap with an open heart." },
+      { name: "The Magician", emoji: "🪄", message: "You have all the tools you need. Trust your abilities." },
+      { name: "The High Priestess", emoji: "🌙", message: "Listen to your intuition. The answers lie within." },
+      { name: "The Empress", emoji: "🌸", message: "Embrace abundance and creativity. Nature is your guide." },
+      { name: "The Emperor", emoji: "👑", message: "Take charge. Structure and discipline will lead to success." },
+      { name: "The Lovers", emoji: "💞", message: "A meaningful choice awaits. Follow your heart." },
+      { name: "The Chariot", emoji: "⚡", message: "Push forward with determination. Victory is near." },
+      { name: "Strength", emoji: "🦁", message: "Inner strength carries you. Be gentle yet powerful." },
+      { name: "The Hermit", emoji: "🕯️", message: "Solitude brings wisdom. Take time to reflect." },
+      { name: "Wheel of Fortune", emoji: "🎡", message: "Change is coming. Embrace the cycle of life." },
+      { name: "Justice", emoji: "⚖️", message: "Truth and fairness prevail. Act with integrity." },
+      { name: "The Star", emoji: "⭐", message: "Hope and healing are on the way. Keep believing." },
+      { name: "The Moon", emoji: "🌕", message: "Not all is as it seems. Trust your deeper feelings." },
+      { name: "The Sun", emoji: "☀️", message: "Joy and clarity shine upon you. Celebrate today." },
+      { name: "The World", emoji: "🌍", message: "Completion and fulfillment. You have come full circle." }
+    ];
+
+    function drawCards() {
+      const shuffled = [...tarotCards].sort(() => Math.random() - 0.5);
+      const drawn = shuffled.slice(0, 3);
+      const display = document.getElementById("cardDisplay");
+      display.innerHTML = drawn.map(card => `
+        <div class="card">
+          <h2>${card.emoji}</h2>
+          <h3>${card.name}</h3>
+          <p>${card.message}</p>
+        </div>
+      `).join("");
+    }
+  </script>
+</body>
+</html>
