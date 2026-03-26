@@ -37,47 +37,152 @@
       padding: 20px;
       width: 200px;
     }
-    .card h2 { font-size: 2em; }
-    .card h3 { color: #d4a8ff; }
-    .card p { font-size: 0.9em; line-height: 1.5; }
+    .card img {
+      width: 150px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .card h3 { color: #d4a8ff; margin: 8px 0; }
+    .card .suit { font-size: 0.75em; color: #9b6fce; margin-bottom: 6px; }
+    .card p { font-size: 0.85em; line-height: 1.5; }
+    .daily-message {
+      margin: 40px auto;
+      max-width: 600px;
+      background: #2d0b4e;
+      border: 2px solid #d4a8ff;
+      border-radius: 15px;
+      padding: 25px;
+    }
+    .daily-message h2 { color: #d4a8ff; margin-bottom: 10px; }
+    .daily-message p { font-size: 1em; line-height: 1.8; font-style: italic; }
   </style>
 </head>
 <body>
   <h1>🔮 Tarot Card of the Day</h1>
-  <p>Draw three cards and discover your message for today</p>
+  <p>Draw three cards from the full 78-card A.E. Waite deck</p>
   <button onclick="drawCards()">✨ Draw My Cards</button>
+
   <div class="cards" id="cardDisplay"></div>
+  <div class="daily-message" id="dailyMessage" style="display:none"></div>
 
   <script>
+    const BASE = "https://archive.org/download/rider-waite-tarot";
+
     const tarotCards = [
-      { name: "The Fool", emoji: "🌟", message: "A new journey begins. Take the leap with an open heart." },
-      { name: "The Magician", emoji: "🪄", message: "You have all the tools you need. Trust your abilities." },
-      { name: "The High Priestess", emoji: "🌙", message: "Listen to your intuition. The answers lie within." },
-      { name: "The Empress", emoji: "🌸", message: "Embrace abundance and creativity. Nature is your guide." },
-      { name: "The Emperor", emoji: "👑", message: "Take charge. Structure and discipline will lead to success." },
-      { name: "The Lovers", emoji: "💞", message: "A meaningful choice awaits. Follow your heart." },
-      { name: "The Chariot", emoji: "⚡", message: "Push forward with determination. Victory is near." },
-      { name: "Strength", emoji: "🦁", message: "Inner strength carries you. Be gentle yet powerful." },
-      { name: "The Hermit", emoji: "🕯️", message: "Solitude brings wisdom. Take time to reflect." },
-      { name: "Wheel of Fortune", emoji: "🎡", message: "Change is coming. Embrace the cycle of life." },
-      { name: "Justice", emoji: "⚖️", message: "Truth and fairness prevail. Act with integrity." },
-      { name: "The Star", emoji: "⭐", message: "Hope and healing are on the way. Keep believing." },
-      { name: "The Moon", emoji: "🌕", message: "Not all is as it seems. Trust your deeper feelings." },
-      { name: "The Sun", emoji: "☀️", message: "Joy and clarity shine upon you. Celebrate today." },
-      { name: "The World", emoji: "🌍", message: "Completion and fulfillment. You have come full circle." }
+      // ── MAJOR ARCANA (22) ──
+      { name: "The Fool",           suit: "Major Arcana", image: `${BASE}/major_arcana_fool.png`,             message: "A new journey begins. Take the leap with an open heart." },
+      { name: "The Magician",       suit: "Major Arcana", image: `${BASE}/major_arcana_magician.png`,         message: "You have all the tools you need. Trust your abilities." },
+      { name: "The High Priestess", suit: "Major Arcana", image: `${BASE}/major_arcana_high_priestess.png`,   message: "Listen to your intuition. The answers lie within." },
+      { name: "The Empress",        suit: "Major Arcana", image: `${BASE}/major_arcana_empress.png`,          message: "Embrace abundance and creativity. Nature is your guide." },
+      { name: "The Emperor",        suit: "Major Arcana", image: `${BASE}/major_arcana_emperor.png`,          message: "Take charge. Structure and discipline lead to success." },
+      { name: "The Hierophant",     suit: "Major Arcana", image: `${BASE}/major_arcana_hierophant.png`,       message: "Seek wisdom from tradition. A mentor may guide you." },
+      { name: "The Lovers",         suit: "Major Arcana", image: `${BASE}/major_arcana_lovers.png`,           message: "A meaningful choice awaits. Follow your heart." },
+      { name: "The Chariot",        suit: "Major Arcana", image: `${BASE}/major_arcana_chariot.png`,          message: "Push forward with determination. Victory is near." },
+      { name: "Strength",           suit: "Major Arcana", image: `${BASE}/major_arcana_strength.png`,         message: "Inner strength carries you. Be gentle yet powerful." },
+      { name: "The Hermit",         suit: "Major Arcana", image: `${BASE}/major_arcana_hermit.png`,           message: "Solitude brings wisdom. Take time to reflect." },
+      { name: "Wheel of Fortune",   suit: "Major Arcana", image: `${BASE}/major_arcana_fortune.png`,          message: "Change is coming. Embrace the cycle of life." },
+      { name: "Justice",            suit: "Major Arcana", image: `${BASE}/major_arcana_justice.png`,          message: "Truth and fairness prevail. Act with integrity." },
+      { name: "The Hanged Man",     suit: "Major Arcana", image: `${BASE}/major_arcana_hanged.png`,           message: "Pause and surrender. A new perspective will reveal itself." },
+      { name: "Death",              suit: "Major Arcana", image: `${BASE}/major_arcana_death.png`,            message: "An ending makes way for beautiful new beginnings." },
+      { name: "Temperance",         suit: "Major Arcana", image: `${BASE}/major_arcana_temperance.png`,       message: "Find balance and patience. Moderation is your superpower." },
+      { name: "The Devil",          suit: "Major Arcana", image: `${BASE}/major_arcana_devil.png`,            message: "What chains you is an illusion. You have the power to break free." },
+      { name: "The Tower",          suit: "Major Arcana", image: `${BASE}/major_arcana_tower.png`,            message: "Sudden change shakes the foundation. Trust the rebuild." },
+      { name: "The Star",           suit: "Major Arcana", image: `${BASE}/major_arcana_star.png`,             message: "Hope and healing are on the way. Keep believing." },
+      { name: "The Moon",           suit: "Major Arcana", image: `${BASE}/major_arcana_moon.png`,             message: "Not all is as it seems. Trust your deeper feelings." },
+      { name: "The Sun",            suit: "Major Arcana", image: `${BASE}/major_arcana_sun.png`,              message: "Joy and clarity shine upon you. Celebrate today." },
+      { name: "Judgement",          suit: "Major Arcana", image: `${BASE}/major_arcana_judgement.png`,        message: "A spiritual awakening calls. Answer with courage." },
+      { name: "The World",          suit: "Major Arcana", image: `${BASE}/major_arcana_world.png`,            message: "Completion and fulfilment. You have come full circle." },
+
+      // ── WANDS (14) ──
+      { name: "Ace of Wands",       suit: "Wands", image: `${BASE}/minor_arcana_wands_ace.png`,    message: "A spark of inspiration lights your path. Seize it now." },
+      { name: "Two of Wands",       suit: "Wands", image: `${BASE}/minor_arcana_wands_two.png`,    message: "You stand at a crossroads. Plan boldly for the future." },
+      { name: "Three of Wands",     suit: "Wands", image: `${BASE}/minor_arcana_wands_three.png`,  message: "Your efforts are taking shape. Look ahead with confidence." },
+      { name: "Four of Wands",      suit: "Wands", image: `${BASE}/minor_arcana_wands_four.png`,   message: "Celebrate your achievements. Joy and harmony surround you." },
+      { name: "Five of Wands",      suit: "Wands", image: `${BASE}/minor_arcana_wands_five.png`,   message: "Competition sharpens you. Embrace the challenge." },
+      { name: "Six of Wands",       suit: "Wands", image: `${BASE}/minor_arcana_wands_six.png`,    message: "Victory is yours. Accept recognition with grace." },
+      { name: "Seven of Wands",     suit: "Wands", image: `${BASE}/minor_arcana_wands_seven.png`,  message: "Hold your ground. Your position is worth defending." },
+      { name: "Eight of Wands",     suit: "Wands", image: `${BASE}/minor_arcana_wands_eight.png`,  message: "Things move fast today. Go with the momentum." },
+      { name: "Nine of Wands",      suit: "Wands", image: `${BASE}/minor_arcana_wands_nine.png`,   message: "You're nearly there. Summon your last reserves of strength." },
+      { name: "Ten of Wands",       suit: "Wands", image: `${BASE}/minor_arcana_wands_ten.png`,    message: "You carry much. It's time to delegate or set something down." },
+      { name: "Page of Wands",      suit: "Wands", image: `${BASE}/minor_arcana_wands_page.png`,   message: "Curiosity and enthusiasm open new doors today." },
+      { name: "Knight of Wands",    suit: "Wands", image: `${BASE}/minor_arcana_wands_knight.png`, message: "Act with passion and speed. Adventure awaits." },
+      { name: "Queen of Wands",     suit: "Wands", image: `${BASE}/minor_arcana_wands_queen.png`,  message: "Lead with warmth and courage. Your energy inspires others." },
+      { name: "King of Wands",      suit: "Wands", image: `${BASE}/minor_arcana_wands_king.png`,   message: "Vision and leadership are your gifts today. Own them." },
+
+      // ── CUPS (14) ──
+      { name: "Ace of Cups",        suit: "Cups", image: `${BASE}/minor_arcana_cups_ace.png`,    message: "A new emotional beginning. Open your heart fully." },
+      { name: "Two of Cups",        suit: "Cups", image: `${BASE}/minor_arcana_cups_two.png`,    message: "A meaningful connection deepens. Honour it." },
+      { name: "Three of Cups",      suit: "Cups", image: `${BASE}/minor_arcana_cups_three.png`,  message: "Celebrate with your people. Joy is multiplied when shared." },
+      { name: "Four of Cups",       suit: "Cups", image: `${BASE}/minor_arcana_cups_four.png`,   message: "Look up from your thoughts. A gift is being offered." },
+      { name: "Five of Cups",       suit: "Cups", image: `${BASE}/minor_arcana_cups_five.png`,   message: "Grieve what was lost, but don't forget what remains." },
+      { name: "Six of Cups",        suit: "Cups", image: `${BASE}/minor_arcana_cups_six.png`,    message: "Nostalgia visits. Let sweet memories bring comfort." },
+      { name: "Seven of Cups",      suit: "Cups", image: `${BASE}/minor_arcana_cups_seven.png`,  message: "Many options dazzle you. Choose what is real over illusion." },
+      { name: "Eight of Cups",      suit: "Cups", image: `${BASE}/minor_arcana_cups_eight.png`,  message: "Something no longer fulfils you. It's okay to walk away." },
+      { name: "Nine of Cups",       suit: "Cups", image: `${BASE}/minor_arcana_cups_nine.png`,   message: "Your wish is close to granted. Feel the abundance." },
+      { name: "Ten of Cups",        suit: "Cups", image: `${BASE}/minor_arcana_cups_ten.png`,    message: "Deep happiness and harmony bless your world today." },
+      { name: "Page of Cups",       suit: "Cups", image: `${BASE}/minor_arcana_cups_page.png`,   message: "A creative, intuitive message arrives. Stay open." },
+      { name: "Knight of Cups",     suit: "Cups", image: `${BASE}/minor_arcana_cups_knight.png`, message: "Follow your heart's calling. Romance and dreams are calling." },
+      { name: "Queen of Cups",      suit: "Cups", image: `${BASE}/minor_arcana_cups_queen.png`,  message: "Lead with empathy and compassion today. Feel deeply." },
+      { name: "King of Cups",       suit: "Cups", image: `${BASE}/minor_arcana_cups_king.png`,   message: "Balance emotion with wisdom. Be the calm in the storm." },
+
+      // ── SWORDS (14) ──
+      { name: "Ace of Swords",      suit: "Swords", image: `${BASE}/minor_arcana_swords_ace.png`,    message: "A moment of clarity cuts through confusion. Trust the truth." },
+      { name: "Two of Swords",      suit: "Swords", image: `${BASE}/minor_arcana_swords_two.png`,    message: "A difficult decision awaits. Remove the blindfold." },
+      { name: "Three of Swords",    suit: "Swords", image: `${BASE}/minor_arcana_swords_three.png`,  message: "Pain visits, but it will pass. Allow yourself to heal." },
+      { name: "Four of Swords",     suit: "Swords", image: `${BASE}/minor_arcana_swords_four.png`,   message: "Rest is not weakness. Your mind needs stillness to recover." },
+      { name: "Five of Swords",     suit: "Swords", image: `${BASE}/minor_arcana_swords_five.png`,   message: "Not every battle is worth winning. Choose peace." },
+      { name: "Six of Swords",      suit: "Swords", image: `${BASE}/minor_arcana_swords_six.png`,    message: "Moving away from turbulence toward calmer waters." },
+      { name: "Seven of Swords",    suit: "Swords", image: `${BASE}/minor_arcana_swords_seven.png`,  message: "Be honest with yourself and others. Shortcuts have a cost." },
+      { name: "Eight of Swords",    suit: "Swords", image: `${BASE}/minor_arcana_swords_eight.png`,  message: "The trap is in your mind. You are freer than you think." },
+      { name: "Nine of Swords",     suit: "Swords", image: `${BASE}/minor_arcana_swords_nine.png`,   message: "Anxiety speaks loudly tonight. Breathe. Dawn is coming." },
+      { name: "Ten of Swords",      suit: "Swords", image: `${BASE}/minor_arcana_swords_ten.png`,    message: "A painful ending is also a release. A new dawn follows." },
+      { name: "Page of Swords",     suit: "Swords", image: `${BASE}/minor_arcana_swords_page.png`,   message: "Stay alert and curious. Important information is nearby." },
+      { name: "Knight of Swords",   suit: "Swords", image: `${BASE}/minor_arcana_swords_knight.png`, message: "Act decisively but think before you charge ahead." },
+      { name: "Queen of Swords",    suit: "Swords", image: `${BASE}/minor_arcana_swords_queen.png`,  message: "Speak your truth clearly and without apology." },
+      { name: "King of Swords",     suit: "Swords", image: `${BASE}/minor_arcana_swords_king.png`,   message: "Logic and fairness guide your decisions today." },
+
+      // ── PENTACLES (14) ──
+      { name: "Ace of Pentacles",   suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_ace.png`,    message: "A new material opportunity arrives. Plant the seed." },
+      { name: "Two of Pentacles",   suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_two.png`,    message: "Balance your responsibilities with flexibility and humour." },
+      { name: "Three of Pentacles", suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_three.png`,  message: "Teamwork and skill bring results. Collaborate." },
+      { name: "Four of Pentacles",  suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_four.png`,   message: "Security matters, but don't let fear make you grasp too tightly." },
+      { name: "Five of Pentacles",  suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_five.png`,   message: "Help is closer than it appears. Ask and you shall receive." },
+      { name: "Six of Pentacles",   suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_six.png`,    message: "Generosity flows both ways. Give and receive with grace." },
+      { name: "Seven of Pentacles", suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_seven.png`,  message: "Patient effort is paying off. Trust the slow growth." },
+      { name: "Eight of Pentacles", suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_eight.png`,  message: "Dedication to your craft brings mastery. Keep going." },
+      { name: "Nine of Pentacles",  suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_nine.png`,   message: "Enjoy the fruits of your labour. You've earned this." },
+      { name: "Ten of Pentacles",   suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_ten.png`,    message: "Lasting abundance and legacy are within reach." },
+      { name: "Page of Pentacles",  suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_page.png`,   message: "Study and practical effort open new doors." },
+      { name: "Knight of Pentacles",suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_knight.png`, message: "Slow and steady wins. Stay methodical and reliable." },
+      { name: "Queen of Pentacles", suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_queen.png`,  message: "Nurture yourself and your resources. Comfort is wisdom." },
+      { name: "King of Pentacles",  suit: "Pentacles", image: `${BASE}/minor_arcana_pentacles_king.png`,   message: "Wealth and stability come from discipline and patience." },
     ];
 
     function drawCards() {
       const shuffled = [...tarotCards].sort(() => Math.random() - 0.5);
       const drawn = shuffled.slice(0, 3);
-      const display = document.getElementById("cardDisplay");
-      display.innerHTML = drawn.map(card => `
+
+      document.getElementById("cardDisplay").innerHTML = drawn.map(card => `
         <div class="card">
-          <h2>${card.emoji}</h2>
+          <img src="${card.image}" alt="${card.name}" onerror="this.style.display='none'"/>
+          <div class="suit">${card.suit}</div>
           <h3>${card.name}</h3>
           <p>${card.message}</p>
         </div>
       `).join("");
+
+      const messages = [
+        `The energy of <strong>${drawn[0].name}</strong> invites fresh beginnings, while <strong>${drawn[1].name}</strong> reminds you of your inner power. Let <strong>${drawn[2].name}</strong> be your compass — together they whisper: trust the journey unfolding before you.`,
+        `<strong>${drawn[0].name}</strong>, <strong>${drawn[1].name}</strong>, and <strong>${drawn[2].name}</strong> weave today's story. Release what no longer serves you, embrace what stirs your soul, and move forward with quiet confidence.`,
+        `With <strong>${drawn[0].name}</strong> lighting your path, <strong>${drawn[1].name}</strong> steadying your heart, and <strong>${drawn[2].name}</strong> watching over your choices — today calls for both courage and grace.`
+      ];
+
+      const msgBox = document.getElementById("dailyMessage");
+      msgBox.style.display = "block";
+      msgBox.innerHTML = `
+        <h2>🌟 Your Message for the Day</h2>
+        <p>${messages[Math.floor(Math.random() * messages.length)]}</p>
+      `;
     }
   </script>
 </body>
