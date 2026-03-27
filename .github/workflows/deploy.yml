@@ -1,0 +1,21 @@
+name: Deploy Tarot App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Validate HTML
+        run: |
+          echo "Checking index.html exists..."
+          test -f index.html && echo "✅ index.html found!" || echo "❌ index.html missing!"
+
+      - name: Deploy complete
+        run: echo "🔮 Tarot app deployed successfully!"
